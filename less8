@@ -1,0 +1,193 @@
+#Task1                                                                                                      
+# class Data:                                                                                               
+#     def __init__(self, para):                                                                             
+#         self.para = para                                                                                  
+#         print(f"Your initial input of date is: {para}")                                                   
+#     @classmethod                                                                                          
+#     def transf(cls, unformatted):                                                                         
+#         date, month, year = list(unformatted.split("-"))                                                  
+#         print(f"Your date in numbers: {date}, {month}, {year}")                                           
+#     @staticmethod                                                                                         
+#     def valid(unformatted):                                                                               
+#         date, month, year = list(unformatted.split("-"))                                                  
+#         print(date)                                                                                       
+#         if int(date) in range(1,32):                                                                      
+#             print("Your date is entered correctly")                                                       
+#         else:                                                                                             
+#             date = int(input("Enter an integer from 1 to 31")) #на правильность дней в месяце (28-31) зада
+#         if int(month) in range(1,13):                                                                     
+#             print("Your month is entered correctly")                                                      
+#         else:                                                                                             
+#             month = int(input("Enter an integer from 1 to 12"))                                           
+#         if int(year) in range(0,2023):                                                                    
+#             print("Your date is entered correctly")                                                       
+#         else:                                                                                             
+#             year = int(input("Enter an integer from 0 to 2023"))                                          
+#         print(f"Your final verified date is: {int(date)}/{int(month)}/{int(year)}")                       
+#                                                                                                           
+# #unformatted = "23-08-2000"                                                                               
+# Data("23-08-3000")                                                                                        
+# Data.transf("23-08-3000")                                                                                 
+# Data.valid("23-08-3000")                                                                                  
+                                                                                                            
+#Task2:                                                                                                     
+                                                                                                            
+# class OwnError(Exception):                                                                                
+#     def __init__(self):                                                                                   
+#         divid = float(input("Give me a dividend: "))                                                      
+#         divis = float(input("Now, type a divisor: "))                                                     
+#         try:                                                                                              
+#             print(f"The result of your division is: {divid / divis}")                                     
+#         except:                                                                                           
+#             ZeroDivisionError #or divis == 0                                                              
+#             divis = int(input("Give me a non-zero divisor: "))                                            
+#             print(f"The result of your division is: {divid / divis}")                                     
+# OwnError()                                                                                                
+                                                                                                            
+# Task3: # в соответствии с уроком интенсива, плюс обработаны случаи неоднократных минусов и точек          
+# class Numeric(Exception):                                                                                 
+#     def __init__(self):                                                                                   
+#         li = []                                                                                           
+#         while True:                                                                                       
+#             num = input("Give me a number for your list. If done, press X: ")                             
+#             if num.upper() == "X":                                                                        
+#                 print(f"Your final list is: {li}")                                                        
+#                 break                                                                                     
+#             else:                                                                                         
+#                 if num.replace(".", "", 1).replace("-", "", 1).isdigit():                                 
+#                     li += [num]                                                                           
+#                     print(li)                                                                             
+#                 else:                                                                                     
+#                     if num.count(".") <= 1 and num.count("-") <= 1 and (num.find("-") <= 0 or (num.find(".
+#                         li += [num]                                                                       
+#                     else:                                                                                 
+#                         li = li                                                                           
+#                         print("Wrong value")                                                              
+#                     print(li)                                                                             
+#                                                                                                           
+#                                                                                                           
+# Numeric()                                                                                                 
+                                                                                                            
+#Tasks4-6:                                                                                                  
+                                                                                                            
+class Warehouse: #принимает (сначала пустой) и отдает девайсы, учитывает инвентарь, пользователей и подразде
+    users = ["office manager", "secretary"]                                                                 
+    units = ["hq", "hr", "operations"]                                                                      
+    DeviceTypes = ["printer", "scanner", "copier"]                                                          
+    Inventory = {} # наполняется и удаляется                                                                
+    def __init__(self):                                                                                     
+        print(f"\033[1;32mWarehouse services: {', '.join(Warehouse.users)} in: {', '.join(Warehouse.units)}"
+        print(f"\033[1;32mWarehouse inventory: {Warehouse.Inventory}\n")                                    
+                                                                                                            
+    @classmethod                                                                                            
+    def accept(cls):                                                                                        
+        # приемка на склад                                                                                  
+        User = input("\033[1;35mType the user sending the device ")                                         
+        cls.checkUser(User)                                                                                 
+        Unit = input("\033[1;35mType the unit sending the device ")                                         
+        cls.checkUnit(Unit)                                                                                 
+        DeviceType = input("\033[1;35mType the type of your device ")                                       
+        cls.checkDeviceType(DeviceType)                                                                     
+        DeviceN = input("\033[1;35mType the office number of your device ")                                 
+        print(f"\033[1;37m{DeviceType.capitalize()} {DeviceN} accepted to the warehouse for storage from: {U
+        Warehouse.Inventory.update({DeviceType:DeviceN})                                                    
+        print(f"\033[1;37mWarehouse now holds: {Warehouse.Inventory}\n")                                    
+                                                                                                            
+    @classmethod                                                                                            
+    def assign(cls): # выдача в подразделение                                                               
+        User = input("\033[1;33mType the user requesting the device ")                                      
+        cls.checkUser(User)                                                                                 
+        Unit = input("\033[1;33mType the unit requesting the device ")                                      
+        cls.checkUnit(Unit)                                                                                 
+        DeviceType = input("\033[1;33mType the type of requested device ")                                  
+        DeviceN = input("\033[1;33mType the number of requested device ")                                   
+        cls.checkDeviceTypeandNAs(DeviceType, DeviceN)                                                      
+        print(f"\033[1;36m{DeviceType.capitalize()} {DeviceN} sent from Warehouse to: {User} in: {Unit}")   
+        del Warehouse.Inventory[DeviceType]                                                                 
+        if Warehouse.Inventory == {}:                                                                       
+            print("\033[1;36mWarehouse now holds NO DEVICES")                                               
+        else:                                                                                               
+            print(f"\033[1;36mWarehouse now holds:")                                                        
+            for key, value in Warehouse.Inventory:                                                          
+                print("\033[1;36mkey" " " "\033[1;36mvalue")                                                
+            return(Warehouse.Inventory)                                                                     
+                                                                                                            
+                                                                                                            
+    @staticmethod # проверка наличия пользовател, подразделения в списках                                   
+    def checkUser(User):                                                                                    
+        if User in Warehouse.users:                                                                         
+            return User                                                                                     
+        else:                                                                                               
+            raise ValueError("No such user ")                                                               
+                                                                                                            
+    @staticmethod                                                                                           
+    def checkUnit(Unit):                                                                                    
+       if Unit in Warehouse.units:                                                                          
+           return Unit                                                                                      
+       else:                                                                                                
+           raise ValueError("No such unit ")                                                                
+                                                                                                            
+    @staticmethod                                                                                           
+    def checkDeviceType(DeviceType):                                                                        
+        if DeviceType in Warehouse.DeviceTypes:                                                             
+            return DeviceType                                                                               
+        else:                                                                                               
+            raise ValueError("No such device type in Warehouse ")                                           
+                                                                                                            
+    @staticmethod                                                                                           
+    def checkDeviceTypeandNAs(DeviceType, DeviceN):                                                         
+        if Warehouse.Inventory.get(DeviceType) == DeviceN:                                                  
+            return DeviceN                                                                                  
+        else:                                                                                               
+            raise ValueError("No such device in Warehouse ")                                                
+                                                                                                            
+Warehouse()                                                                                                 
+Warehouse.accept()                                                                                          
+Warehouse.assign()                                                                                          
+                                                                                                            
+                                                                                                            
+class OfficeEquipment: #для каждого вызывается слегка индивидуализированная функция run                     
+    # но только если девайс уже есть в списке склада или подразделения                                      
+    def __init__(self, N):                                                                                  
+        self.N = N                                                                                          
+    def run(self, N):                                                                                       
+        print(f"{self} No {N} is running")                                                                  
+class Printer(OfficeEquipment):                                                                             
+    def __init__(self, N):                                                                                  
+        self.N = N                                                                                          
+    def runPrinter(N):                                                                                      
+        print(f"Printer {N} is active")                                                                     
+class Scanner(OfficeEquipment):                                                                             
+    def __init__(self, N):                                                                                  
+        self.N = N                                                                                          
+    def runScanner(N):                                                                                      
+        print(f"Scanner {N} is running")                                                                    
+class Copier(OfficeEquipment):                                                                              
+    def __init__(self, N):                                                                                  
+        self.N = N                                                                                          
+    def runCopier(N):                                                                                       
+        print(f"Copier {N} is activated")                                                                   
+# Copier.runCopier(45566)                                                                                   
+# OfficeEquipment.run("Copier", 56565)                                                                      
+                                                                                                            
+                                                                                                            
+#Task7:                                                                                                     
+# class ComplexNumber:                                                                                      
+#     def __init__(self, n1, n2):                                                                           
+#         self.n1 = n1                                                                                      
+#         self.n2 = n2                                                                                      
+#     def __add__(n1, n2):                                                                                  
+#         a1, b1 = n1                                                                                       
+#         a2, b2 = n2                                                                                       
+#         print(f"Your numbers add to z3 = {a1 + a2} + {b1 + b2}i")                                         
+#     def __mul__(n1, n2):                                                                                  
+#         a1, b1 = n1                                                                                       
+#         a2, b2 = n2                                                                                       
+#         print(f"Your numbers multiply to z3 = {a1 * a2 - b1 * b2} + {a1 * b2 + a2 * b1}i")                
+# num1 = [3,4]                                                                                              
+# num2 = [-1,6]                                                                                             
+# ComplexNumber.__add__(num1, num2)                                                                         
+# ComplexNumber.__mul__(num1, num2)                                                                         
+                                                                                                            
+                                                                                                            
+                                                                                                            
